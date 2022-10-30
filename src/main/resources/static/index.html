@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CIC-009-001 WEB</title>
+  <link href="dependencias/bootstrap.min.css" rel="stylesheet">
+  <script src="dependencias/bootstrap.bundle.min.js"></script>
+  <script src="dependencias/mermaid.min.js"></script>
+  <script src="dependencias/jquery-3.6.1.min.js"></script>
+  <script src="js/instituto-controller.js"></script>
+  <script src="js/instituto-service.js"></script>
+</head>
+<body style="background-image: url('img/circuito.jpg'); background-repeat: repeat;">
+<div style="padding-top: 2rem">
+  <div class="container" style="padding: 1.5rem;background-color: white;">
+    <div class="row justify-content-md-center" style="background-color: white;">
+      <div class="col-md-12 col-xl-6">
+        <div class="accordion accordion-flush" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingUno">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      style="font-size: 1.5rem !important;"
+                      data-bs-target="#collapseUno" aria-expanded="true" aria-controls="collapseUno">
+                Visualización
+              </button>
+            </h2>
+            <div id="collapseUno" class="accordion-collapse collapse show" aria-labelledby="headingUno"
+                 data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <div>
+                  <div class="d-grid gap-2">
+                    <button onclick="mostarTodasLasComputadoras()" class="btn btn-primary">Mostrar
+                      todas las
+                      computadoras
+                    </button>
+                    <button onclick="mostrarConexionCompletaMinima()" id="boton-conexion-completa"
+                            class="btn btn-primary">Mostar conexión completa mínima
+                    </button>
+                  </div>
+                  <div id="error-conexion-completa"></div>
+                </div>
+                <h4 style="padding-top: 1rem;">
+                  Mostrar conexiones mínimas
+                </h4>
+                <div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="camino-minimo-nombre1"
+                           placeholder="Nombre de la computadora inicial">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la computadora inicial
+                    </label>
+                  </div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="camino-minimo-nombre2"
+                           placeholder="Nombre de la computadora final (Opcional)">
+                    <label for="camino-minimo-nombre2">
+                      Nombre de la computadora final (Opcional)
+                    </label>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitObtenerCaminosMinimos()" id="boton-camino-minimo"
+                            class="btn btn-primary">Mostar conexiones
+                      mínimas
+                    </button>
+                  </div>
+                  <div id="error-camino-minimo"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingDos">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      style="font-size: 1.5rem !important;"
+                      data-bs-target="#collapseDos" aria-expanded="true" aria-controls="collapseDos">
+                Creación
+              </button>
+            </h2>
+            <div id="collapseDos" class="accordion-collapse collapse" aria-labelledby="headingDos"
+                 data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <h4>
+                  Crear una computadora
+                </h4>
+                <div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="crear-computadora-nombre"
+                           placeholder="Nombre de la nueva computadora">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la nueva computadora
+                    </label>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitCrearComputadora()" id="boton-crear-computadora"
+                            class="btn btn-success">Crear computadora
+                    </button>
+                  </div>
+                  <div id="error-crear-computadora"></div>
+                </div>
+                <h4 style="padding-top: 1rem;">
+                  Crear una conexión
+                </h4>
+                <div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="crear-conexion-nombre1"
+                           placeholder="Nombre de la computadora a conectar">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la computadora a conectar
+                    </label>
+                  </div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="crear-conexion-nombre2"
+                           placeholder="Nombre de la otra computadora a conectar">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la otra computadora a conectar
+                    </label>
+                  </div>
+                  <div class="form-floating">
+                    <input class="form-control" type="number" id="crear-conexion-latencia"
+                           placeholder="Latencia entre las computadoras (opcional)">
+                    <label for="camino-minimo-nombre1">
+                      Latencia entre las computadoras (opcional)
+                    </label>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitCrearConexion()" id="boton-crear-conexion"
+                            class="btn btn-success">Crear conexión
+                    </button>
+                  </div>
+                  <div id="error-crear-conexion"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTres">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      style="font-size: 1.5rem !important;"
+                      data-bs-target="#collapseTres" aria-expanded="true"
+                      aria-controls="collapseTres">
+                Eliminación
+              </button>
+            </h2>
+            <div id="collapseTres" class="accordion-collapse collapse"
+                 aria-labelledby="headingTres" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <h4>
+                  Eliminar una computadora
+                </h4>
+                <div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="eliminar-computadora-nombre"
+                           placeholder="Nombre de la computadora a eliminar">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la computadora a eliminar
+                    </label>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitEliminarComputadora()"
+                            id="boton-eliminar-computadora"
+                            class="btn btn-danger">Eliminar computadora
+                    </button>
+                  </div>
+                  <div id="error-eliminar-computadora"></div>
+                </div>
+                <h4 style="padding-top: 1rem;">
+                  Eliminar una conexión
+                </h4>
+                <div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="eliminar-conexion-nombre1"
+                           placeholder="Nombre de la computadora a desconectar">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la computadora a desconectar
+                    </label>
+                  </div>
+                  <div class="form-floating">
+                    <input class="form-control" type="text" id="eliminar-conexion-nombre2"
+                           placeholder="Nombre de la otra computadora a desconectar">
+                    <label for="camino-minimo-nombre1">
+                      Nombre de la otra computadora a desconectar
+                    </label>
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitEliminarConexion()" id="boton-eliminar-conexion"
+                            class="btn btn-danger">Eliminar conexión
+                    </button>
+                  </div>
+                  <div id="error-eliminar-conexion"></div>
+                </div>
+                <h4 style="padding-top: 1rem;">
+                  Resetear computadoras a valor default
+                </h4>
+                <div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitResetearComputadoras()"
+                            id="boton-reset-computadoras"
+                            class="btn btn-danger">Reset
+                    </button>
+                  </div>
+                  <div id="error-reset-computadoras"></div>
+                </div>
+                <h4 style="padding-top: 1rem;">
+                  Eliminar todas las computadoras
+                </h4>
+                <div>
+                  <div class="d-grid gap-2">
+                    <button onclick="submitEliminarComputadoras()"
+                            id="boton-eliminar-computadoras"
+                            class="btn btn-danger">Eliminar
+                    </button>
+                  </div>
+                  <div id="error-eliminar-computadoras"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 col-xl-6">
+        <div style="text-align: center;">
+          <h3>
+            Diagrama de computadoras/conexiones
+          </h3>
+        </div>
+        <div class="mermaid">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

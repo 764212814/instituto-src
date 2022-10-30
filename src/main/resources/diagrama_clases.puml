@@ -1,0 +1,187 @@
+@startuml
+class com.ceneval.exoal.jifo.SpringBootCenevalApplication {
++ {static} void main(String[])
+}
+interface com.ceneval.exoal.jifo.db.CrudConexion {
+~ void crearNuevaConexion(Computadora,Computadora,BigDecimal)
+~ void eliminarConexiones(Computadora)
+~ void eliminarConexion(Integer)
+~ void eliminarTodasLasConexiones()
+~ ConexionDto mapearEntidadConexion(Conexion,String)
+}
+class com.ceneval.exoal.jifo.rest.ControladorInstituto {
+- CrudComputadora crudComputadora
+- ServicioGrafo servicioGrafo
++ ResponseEntity<?> obtenerTodasComputadoras()
++ ResponseEntity<?> crearComputadora(SolicitudCrearComputadoraDto)
++ ResponseEntity<?> eliminarComputadora(SolicitudEliminarComputadoraDto)
++ ResponseEntity<?> eliminarComputadoras()
++ ResponseEntity<?> crearConexion(SolicitudCrearConexionDto)
++ ResponseEntity<?> eliminarConexion(SolicitudDesconectarComputadorasDto)
++ ResponseEntity<?> obtenerCaminosMinimos(SolicitudCrearCaminosDto)
++ ResponseEntity<?> obtenerCaminosMinimos()
++ ResponseEntity<?> crearComputadorasDefault()
+}
+class com.ceneval.exoal.jifo.dto.SolicitudEliminarComputadoraDto {
+- String nombreComputadora
+}
+class com.ceneval.exoal.jifo.db.Conexion {
+- int identificador
+- BigDecimal latencia
+- List<Computadora> computadoras
+}
+class com.ceneval.exoal.jifo.grafo.UtilidadMapeadorGrafo {
+# {static} Set<ComputadoraDto> convertirGrafoAComputadoras(Grafo)
+- {static} ComputadoraDto convertirNodoAComputadora(Nodo)
+- {static} ConexionDto covertirAristaAConexion(AristaConPeso,String)
+# {static} Grafo convertirComputadorasAGrafo(Set<ComputadoraDto>)
+- {static} List<AristaConPeso> extraerAristas(ComputadoraDto)
+- {static} AristaConPeso extraerArista(ConexionDto,ComputadoraDto)
+}
+class com.ceneval.exoal.jifo.grafo.ServicioGrafoDefault {
++ RespuestaObtenerRecubridorMinimoDto calcularArbolRecubridorMinimo(Set<ComputadoraDto>)
++ List<RespuestaCalcularCaminoDto> calcularCaminosMinimos(SolicitudCrearCaminosDto,Set<ComputadoraDto>)
+- List<RespuestaCalcularCaminoDto> calcularCaminosMinimos(Grafo,String,String)
+- ResultadoCalcularCaminosDto caminosMinimos(Grafo,String)
+- Grafo calcularArbolRecubridorMinimo(Grafo)
+- boolean calcularSiElGrafoTieneCiclos(Nodo,Grafo,Set<Nodo>,Set<Nodo>,String)
+}
+class com.ceneval.exoal.jifo.dto.ComputadoraDto {
+- String nombre
+- Set<ConexionDto> conexiones
+}
+interface com.ceneval.exoal.jifo.grafo.ServicioGrafo {
+~ RespuestaObtenerRecubridorMinimoDto calcularArbolRecubridorMinimo(Set<ComputadoraDto>)
+~ List<RespuestaCalcularCaminoDto> calcularCaminosMinimos(SolicitudCrearCaminosDto,Set<ComputadoraDto>)
+}
+class com.ceneval.exoal.jifo.dto.ConexionDto {
+- Integer identificador
+- BigDecimal latencia
+- String computadoraConectada
+}
+interface com.ceneval.exoal.jifo.grafo.Grafo {
+~ Map<String,Nodo> obtenerNodos()
+~ Nodo obtenerNodo(String)
+~ int cantidadDeNodos()
+~ Nodo agregarNodoVacio(String)
+~ void agregarArista(AristaConPeso)
+~ Map<Integer,AristaConPeso> obtenerAristas()
+}
+class com.ceneval.exoal.jifo.dto.SolicitudCrearCaminosDto {
+- String nombreComputadoraInicial
+- String nombreComputadoraFinal
+}
+interface com.ceneval.exoal.jifo.db.RepositorioComputadora {
+~ boolean estanDirectamenteConectadas(String,String)
+}
+class com.ceneval.exoal.jifo.dto.RespuestaObtenerTodasComputadorasDto {
+- Set<ComputadoraDto> computadoras
+}
+class com.ceneval.exoal.jifo.dto.RespuestaCalcularCaminoDto {
+- Queue<String> caminoMinimo
+- BigDecimal pesoTotal
+}
+interface com.ceneval.exoal.jifo.db.CrudComputadora {
+~ void crearNuevaComputadora(SolicitudCrearComputadoraDto)
+~ void conectarComputadoras(SolicitudCrearConexionDto)
+~ void desconectarComputadoras(SolicitudDesconectarComputadorasDto)
+~ void eliminarComputadora(SolicitudEliminarComputadoraDto)
+~ void eliminarTodasLasComputadoras()
+~ RespuestaObtenerTodasComputadorasDto obtenerTodasComputadoras()
+}
+interface com.ceneval.exoal.jifo.grafo.AristaConPeso {
+~ Integer obtenerIdentificador()
+~ BigDecimal obtenerPeso()
+~ String obtenerNombreNodoConectado1()
+~ String obtenerNombreNodoConectado2()
+~ String obtenerNombreOtroNodo(String)
+}
+interface com.ceneval.exoal.jifo.db.RepositorioConexion {
+}
+class com.ceneval.exoal.jifo.db.Computadora {
+- String nombre
+- Set<Conexion> conexiones
+}
+class com.ceneval.exoal.jifo.grafo.GrafoDefault {
+- Map<String,Nodo> nodos
++ Nodo agregarNodoVacio(String)
++ void agregarArista(AristaConPeso)
++ Nodo obtenerNodo(String)
++ int cantidadDeNodos()
++ Map<Integer,AristaConPeso> obtenerAristas()
++ Map<String,Nodo> obtenerNodos()
+}
+class com.ceneval.exoal.jifo.dto.SolicitudDesconectarComputadorasDto {
+- String nombreComputadora1
+- String nombreComputadora2
+}
+class com.ceneval.exoal.jifo.db.ServicioCrudConexion {
+- RepositorioConexion repositorioConexion
++ void crearNuevaConexion(Computadora,Computadora,BigDecimal)
++ void eliminarConexion(Integer)
++ void eliminarTodasLasConexiones()
++ void eliminarConexiones(Computadora)
++ ConexionDto mapearEntidadConexion(Conexion,String)
+- BigDecimal generarBigDecimalAleatorio(BigDecimal,BigDecimal)
+}
+class com.ceneval.exoal.jifo.grafo.AristaConPesoDefault {
+- Integer identificador
+- String nombreNodo1
+- String nombreNodo2
+- BigDecimal peso
++ Integer obtenerIdentificador()
++ BigDecimal obtenerPeso()
++ String obtenerNombreNodoConectado1()
++ String obtenerNombreNodoConectado2()
++ String obtenerNombreOtroNodo(String)
+}
+class com.ceneval.exoal.jifo.dto.RespuestaObtenerRecubridorMinimoDto {
+- Set<ComputadoraDto> computadoras
+}
+interface com.ceneval.exoal.jifo.grafo.Nodo {
+~ Set<? extends AristaConPeso> obtenerAristas()
+~ String obtenerNombre()
+~ void agregarArista(AristaConPeso)
+}
+class com.ceneval.exoal.jifo.dto.SolicitudCrearConexionDto {
+- String nombreComputadora1
+- String nombreComputadora2
+- BigDecimal latencia
+}
+class com.ceneval.exoal.jifo.dto.ResultadoCalcularCaminosDto {
+- HashMap<String,Queue<String>> caminosMinimos
+- HashMap<String,BigDecimal> pesosMinimos
+}
+class com.ceneval.exoal.jifo.db.ServicioCrudComputadora {
+- RepositorioComputadora repositorioComputadora
+- ServicioCrudConexion servicioCrudConexion
++ void crearNuevaComputadora(SolicitudCrearComputadoraDto)
++ void conectarComputadoras(SolicitudCrearConexionDto)
++ void desconectarComputadoras(SolicitudDesconectarComputadorasDto)
++ void eliminarComputadora(SolicitudEliminarComputadoraDto)
++ void eliminarTodasLasComputadoras()
++ RespuestaObtenerTodasComputadorasDto obtenerTodasComputadoras()
+- ComputadoraDto mapearEntidadComputadora(Computadora)
+}
+class com.ceneval.exoal.jifo.dto.SolicitudCrearComputadoraDto {
+- String nombreComputadora
++ String getNombreComputadora()
+}
+class com.ceneval.exoal.jifo.grafo.NodoDefault {
+- String nombre
+- Map<Integer,AristaConPeso> aristas
++ Set<? extends AristaConPeso> obtenerAristas()
++ String obtenerNombre()
++ void agregarArista(AristaConPeso)
+}
+
+
+com.ceneval.exoal.jifo.grafo.ServicioGrafo <|.. com.ceneval.exoal.jifo.grafo.ServicioGrafoDefault
+org.springframework.data.repository.CrudRepository <|-- com.ceneval.exoal.jifo.db.RepositorioComputadora
+org.springframework.data.repository.CrudRepository <|-- com.ceneval.exoal.jifo.db.RepositorioConexion
+com.ceneval.exoal.jifo.grafo.Grafo <|.. com.ceneval.exoal.jifo.grafo.GrafoDefault
+com.ceneval.exoal.jifo.db.CrudConexion <|.. com.ceneval.exoal.jifo.db.ServicioCrudConexion
+com.ceneval.exoal.jifo.grafo.AristaConPeso <|.. com.ceneval.exoal.jifo.grafo.AristaConPesoDefault
+com.ceneval.exoal.jifo.db.CrudComputadora <|.. com.ceneval.exoal.jifo.db.ServicioCrudComputadora
+com.ceneval.exoal.jifo.grafo.Nodo <|.. com.ceneval.exoal.jifo.grafo.NodoDefault
+@enduml

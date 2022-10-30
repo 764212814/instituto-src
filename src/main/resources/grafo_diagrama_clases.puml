@@ -1,0 +1,75 @@
+@startuml
+interface com.ceneval.exoal.jifo.grafo.Nodo {
+~ Set<? extends AristaConPeso> obtenerAristas()
+~ String obtenerNombre()
+~ void agregarArista(AristaConPeso)
+}
+interface com.ceneval.exoal.jifo.grafo.Grafo {
+~ Map<String,Nodo> obtenerNodos()
+~ Nodo obtenerNodo(String)
+~ int cantidadDeNodos()
+~ Nodo agregarNodoVacio(String)
+~ void agregarArista(AristaConPeso)
+~ Map<Integer,AristaConPeso> obtenerAristas()
+}
+class com.ceneval.exoal.jifo.grafo.UtilidadMapeadorGrafo {
+# {static} Set<ComputadoraDto> convertirGrafoAComputadoras(Grafo)
+- {static} ComputadoraDto convertirNodoAComputadora(Nodo)
+- {static} ConexionDto covertirAristaAConexion(AristaConPeso,String)
+# {static} Grafo convertirComputadorasAGrafo(Set<ComputadoraDto>)
+- {static} List<AristaConPeso> extraerAristas(ComputadoraDto)
+- {static} AristaConPeso extraerArista(ConexionDto,ComputadoraDto)
+}
+class com.ceneval.exoal.jifo.grafo.ServicioGrafoDefault {
++ RespuestaObtenerRecubridorMinimoDto calcularArbolRecubridorMinimo(Set<ComputadoraDto>)
++ List<RespuestaCalcularCaminoDto> calcularCaminosMinimos(SolicitudCrearCaminosDto,Set<ComputadoraDto>)
+- List<RespuestaCalcularCaminoDto> calcularCaminosMinimos(Grafo,String,String)
+- ResultadoCalcularCaminosDto caminosMinimos(Grafo,String)
+- Grafo calcularArbolRecubridorMinimo(Grafo)
+- boolean calcularSiElGrafoTieneCiclos(Nodo,Grafo,Set<Nodo>,Set<Nodo>,String)
+}
+interface com.ceneval.exoal.jifo.grafo.AristaConPeso {
+~ Integer obtenerIdentificador()
+~ BigDecimal obtenerPeso()
+~ String obtenerNombreNodoConectado1()
+~ String obtenerNombreNodoConectado2()
+~ String obtenerNombreOtroNodo(String)
+}
+class com.ceneval.exoal.jifo.grafo.AristaConPesoDefault {
+- Integer identificador
+- String nombreNodo1
+- String nombreNodo2
+- BigDecimal peso
++ Integer obtenerIdentificador()
++ BigDecimal obtenerPeso()
++ String obtenerNombreNodoConectado1()
++ String obtenerNombreNodoConectado2()
++ String obtenerNombreOtroNodo(String)
+}
+class com.ceneval.exoal.jifo.grafo.NodoDefault {
+- String nombre
+- Map<Integer,AristaConPeso> aristas
++ Set<? extends AristaConPeso> obtenerAristas()
++ String obtenerNombre()
++ void agregarArista(AristaConPeso)
+}
+class com.ceneval.exoal.jifo.grafo.GrafoDefault {
+- Map<String,Nodo> nodos
++ Nodo agregarNodoVacio(String)
++ void agregarArista(AristaConPeso)
++ Nodo obtenerNodo(String)
++ int cantidadDeNodos()
++ Map<Integer,AristaConPeso> obtenerAristas()
++ Map<String,Nodo> obtenerNodos()
+}
+interface com.ceneval.exoal.jifo.grafo.ServicioGrafo {
+~ RespuestaObtenerRecubridorMinimoDto calcularArbolRecubridorMinimo(Set<ComputadoraDto>)
+~ List<RespuestaCalcularCaminoDto> calcularCaminosMinimos(SolicitudCrearCaminosDto,Set<ComputadoraDto>)
+}
+
+
+com.ceneval.exoal.jifo.grafo.ServicioGrafo <|.. com.ceneval.exoal.jifo.grafo.ServicioGrafoDefault
+com.ceneval.exoal.jifo.grafo.AristaConPeso <|.. com.ceneval.exoal.jifo.grafo.AristaConPesoDefault
+com.ceneval.exoal.jifo.grafo.Nodo <|.. com.ceneval.exoal.jifo.grafo.NodoDefault
+com.ceneval.exoal.jifo.grafo.Grafo <|.. com.ceneval.exoal.jifo.grafo.GrafoDefault
+@enduml
